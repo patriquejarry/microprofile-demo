@@ -16,7 +16,7 @@ public class PreferenceHealthCheck implements HealthCheck {
     @Inject
     @ConfigProperty(name = "preference.api.url",
             defaultValue = "http://localhost:8081/")
-    private String preferenceURL;
+    String preferenceURL;
 
 
     @Override
