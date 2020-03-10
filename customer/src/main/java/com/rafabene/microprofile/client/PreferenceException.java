@@ -4,9 +4,10 @@ import javax.ws.rs.*;
 
 public class PreferenceException extends WebApplicationException {
 
-    private int status;
+    private static final long serialVersionUID = 1L;
+    private final int status;
 
-    public PreferenceException(int status, String message) {
+    public PreferenceException(final int status, final String message) {
         super(message);
         this.status = status;
     }

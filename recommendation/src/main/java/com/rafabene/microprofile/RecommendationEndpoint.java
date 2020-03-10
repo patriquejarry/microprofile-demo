@@ -26,7 +26,7 @@ public class RecommendationEndpoint {
 			System.getenv().getOrDefault("HOSTNAME", "unknown")
 	);
 
-	static String parseContainerIdFromHostname(String hostname) {
+	static String parseContainerIdFromHostname(final String hostname) {
 		return hostname.replaceAll("recommendation-v\\d+-", "");
 	}
 
@@ -43,7 +43,7 @@ public class RecommendationEndpoint {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Traced
-    @Counted(name = "recommendationCount", monotonic = true, description = "Number of time recommendation is requested")
+    @Counted(name = "recommendationCount", description = "Number of time recommendation is requested")
 	@Operation(description = "Get the Recommendation version and counter")
 	public Response doGet() {
 		logger.info(String.format("recommendation request from %s: %d", HOSTNAME, count));

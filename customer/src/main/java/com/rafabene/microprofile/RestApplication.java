@@ -1,11 +1,11 @@
 package com.rafabene.microprofile;
 
 
-import org.eclipse.microprofile.openapi.annotations.*;
-import org.eclipse.microprofile.openapi.annotations.info.*;
+import javax.ws.rs.core.Application;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
+import org.eclipse.microprofile.openapi.annotations.info.Contact;
+import org.eclipse.microprofile.openapi.annotations.info.Info;
 
 @OpenAPIDefinition(info = @Info(
         title = "Customer Service",

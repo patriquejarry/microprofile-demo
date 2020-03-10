@@ -8,7 +8,7 @@ public class PreferenceExceptionWrapper implements ResponseExceptionMapper<Prefe
 
 
     @Override
-    public PreferenceException toThrowable(Response response) {
+    public PreferenceException toThrowable(final Response response) {
         return new PreferenceException(response.getStatus(), response.readEntity(String.class));
     }
 }

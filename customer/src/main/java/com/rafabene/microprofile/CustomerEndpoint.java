@@ -1,24 +1,27 @@
 package com.rafabene.microprofile;
 
-import com.rafabene.microprofile.client.*;
-import io.quarkus.runtime.annotations.*;
-import org.apache.http.util.*;
-import org.eclipse.microprofile.config.inject.*;
-import org.eclipse.microprofile.openapi.annotations.*;
-import org.eclipse.microprofile.openapi.annotations.media.*;
-import org.eclipse.microprofile.openapi.annotations.responses.*;
-import org.eclipse.microprofile.openapi.annotations.tags.*;
-import org.eclipse.microprofile.opentracing.*;
-import org.eclipse.microprofile.rest.client.*;
-import org.slf4j.*;
+import static java.lang.String.format;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.*;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.net.*;
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import static java.lang.String.format;
+import com.rafabene.microprofile.client.PreferenceException;
+import com.rafabene.microprofile.client.PreferenceExceptionWrapper;
+import com.rafabene.microprofile.client.PreferenceService;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.opentracing.Traced;
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 @ApplicationScoped
 @Path("/api")
@@ -28,11 +31,9 @@ public class CustomerEndpoint {
 	@Inject
 	@ConfigProperty(name = "preference.api.url",
 			defaultValue = "http://localhost:8081/")
-	private String preferenceURL;
+	String preferenceURL;
 
 	private static final String RESPONSE_STRING_FORMAT = "customer => %s\n";
-
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@GET
 	@Traced
