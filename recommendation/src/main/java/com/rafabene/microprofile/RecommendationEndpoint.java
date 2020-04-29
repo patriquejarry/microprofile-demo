@@ -43,7 +43,7 @@ public class RecommendationEndpoint {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Traced
-    @Counted(name = "recommendationCount", description = "Number of time recommendation is requested")
+    @Counted(name = "recommendationCount", description = "Count recommendation requests")
 	@Operation(description = "Get the Recommendation version and counter")
 	public Response doGet() {
 		logger.info(String.format("recommendation request from %s: %d", HOSTNAME, count));
