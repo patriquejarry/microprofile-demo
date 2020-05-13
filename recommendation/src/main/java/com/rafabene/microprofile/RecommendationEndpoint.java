@@ -1,6 +1,8 @@
 package com.rafabene.microprofile;
 
 
+import org.eclipse.microprofile.faulttolerance.Asynchronous;
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
 import org.eclipse.microprofile.metrics.annotation.*;
 import org.eclipse.microprofile.openapi.annotations.*;
 import org.eclipse.microprofile.openapi.annotations.tags.*;
@@ -45,18 +47,20 @@ public class RecommendationEndpoint {
 	@Traced
     @Counted(name = "recommendationCount", description = "Count recommendation requests")
 	@Operation(description = "Get the Recommendation version and counter")
-	public Response doGet() {
+	@Bulkhead(5)
+	public Response doGet() throws InterruptedException {
 		logger.info(String.format("recommendation request from %s: %d", HOSTNAME, count));
 		if (misbehave) {
-			count = 0;
 			logger.info(String.format("Misbehaving %d", count));
+			behave();
 			return Response
 					.status(Response.Status.SERVICE_UNAVAILABLE)
 					.entity(String.format("recommendation misbehavior from '%s'\n", HOSTNAME))
 					.build();
 		}else{
 			count++;
-			logger.info(String.format("recommendation request from %s: %d", HOSTNAME, count));
+			// Thread.sleep(2 * 1000);
+			misbehave();
 			return Response
 					.ok(String.format(RESPONSE_STRING_FORMAT, HOSTNAME, count))
 					.build();
@@ -67,7 +71,7 @@ public class RecommendationEndpoint {
     @GET
     @Produces("text/plain")
     @Path("/misbehave")
-    public Response misbehave(){
+    public synchronized Response misbehave(){
         this.misbehave = true;
         logger.info("'misbehave' has been set to 'true'");
         return Response.ok("Following requests to '/' will return a 503\n").build();
@@ -76,7 +80,7 @@ public class RecommendationEndpoint {
     @GET
     @Produces("text/plain")
     @Path("/behave")
-    public Response behave(){
+    public synchronized Response behave(){
         this.misbehave = false;
         logger.info("'misbehave' has been set to 'false'");
         return Response.ok("Following requests to '/' will return a 200\n").build();

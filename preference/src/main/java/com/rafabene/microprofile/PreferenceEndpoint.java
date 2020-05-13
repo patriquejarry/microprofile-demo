@@ -5,6 +5,8 @@ import static java.lang.String.format;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,6 +20,8 @@ import com.rafabene.microprofile.client.RecommendationExceptionWrapper;
 import com.rafabene.microprofile.client.RecommendationService;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.faulttolerance.Timeout;
@@ -47,10 +51,12 @@ public class PreferenceEndpoint {
     @Produces(MediaType.TEXT_PLAIN)
     @Traced
     @Retry(maxRetries = 5)
-    @Timeout
-    @Fallback(fallbackMethod = "fallback")
+   // @Timeout(500)
+   // @Fallback(fallbackMethod = "fallback")
+   // @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.5 )
     @Operation(description = "Get Preference and Recommendation")
-    public Response doGet() throws MalformedURLException {
+    public Response doGet() throws MalformedURLException, InterruptedException {
+        // Thread.sleep(10 * 1000);
         URL url = new URL(recommendationURL);
         RecommendationService recommendationService = RestClientBuilder
                 .newBuilder()
