@@ -9,7 +9,7 @@ import javax.enterprise.context.*;
 import javax.inject.*;
 import java.net.*;
 
-@Liveness
+@Readiness
 @ApplicationScoped
 public class PreferenceHealthCheck implements HealthCheck {
 

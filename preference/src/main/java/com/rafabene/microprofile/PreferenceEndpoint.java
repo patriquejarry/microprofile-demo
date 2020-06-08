@@ -51,9 +51,9 @@ public class PreferenceEndpoint {
     @Produces(MediaType.TEXT_PLAIN)
     @Traced
     @Retry(maxRetries = 5)
-   // @Timeout(500)
-   // @Fallback(fallbackMethod = "fallback")
-   // @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.5 )
+    @Timeout(500)
+    @Fallback(fallbackMethod = "fallback")
+    // @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.5 )
     @Operation(description = "Get Preference and Recommendation")
     public Response doGet() throws MalformedURLException, InterruptedException {
         // Thread.sleep(10 * 1000);

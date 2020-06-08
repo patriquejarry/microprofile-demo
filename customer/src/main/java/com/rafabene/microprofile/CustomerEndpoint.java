@@ -8,6 +8,7 @@ import java.net.URL;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -23,6 +24,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.eclipse.microprofile.opentracing.Traced;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
+import io.helidon.microprofile.cors.CrossOrigin;
+
 @ApplicationScoped
 @Path("/api")
 @Tag(name = "Customer Service", description = "Get Customer, Preference and Recommendation")
@@ -31,14 +34,19 @@ public class CustomerEndpoint {
 	@Inject
 	@ConfigProperty(name = "preference.api.url",
 			defaultValue = "http://localhost:8081/")
-	String preferenceURL;
+	private String preferenceURL;
 
 	private static final String RESPONSE_STRING_FORMAT = "customer => %s\n";
+
+	@OPTIONS
+	@CrossOrigin
+	public void doOptions(){
+	}
 
 	@GET
 	@Traced
 	@Produces(MediaType.TEXT_PLAIN)
-    @Operation(description = "Get Customer, Preference and Recommendation")
+	@Operation(description = "Get Customer, Preference and Recommendation")
 	public Response doGet() throws MalformedURLException {
 		URL url = new URL(preferenceURL);
 		PreferenceService preferenceService = RestClientBuilder
