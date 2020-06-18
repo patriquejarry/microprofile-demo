@@ -1,7 +1,6 @@
 package com.rafabene.microprofile;
 
 
-import org.eclipse.microprofile.faulttolerance.Asynchronous;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
 import org.eclipse.microprofile.metrics.annotation.*;
 import org.eclipse.microprofile.openapi.annotations.*;
