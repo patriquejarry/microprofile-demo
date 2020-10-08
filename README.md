@@ -37,12 +37,12 @@ Slides to present this codebase are available at <http://bit.ly/slides-microprof
 * http://localhost/?url=http://localhost:8080/openapi
 
 # Jaeger
-* http://localhost:16686
 * docker run -d --rm --name=jaeger -p5775:5775/udp -p6831:6831/udp -p6832:6832/udp -p5778:5778 -p16686:16686 -p14268:14268 jaegertracing/all-in-one:latest
+* http://localhost:16686
 
 # Prometheus
-* http://localhost:9090
 * docker run -d -v \`pwd`/prometheus.yml:/etc/prometheus/prometheus.yml -p 9090:9090 prom/prometheus
+* http://localhost:9090
 
 # Utils
 * https://start.microprofile.io/
